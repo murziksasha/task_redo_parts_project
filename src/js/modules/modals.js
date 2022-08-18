@@ -64,7 +64,7 @@ const modals = () => {
     }, time);
   }
 
-  // showModalByTime('.popup_engineer', 60000);
+  showModalByTime('.popup_engineer', 6000);
 
   function calcScroll() {
     const div = document.createElement('div');
