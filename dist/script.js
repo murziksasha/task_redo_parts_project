@@ -18098,7 +18098,8 @@ var modals = function modals() {
     var trigger = document.querySelectorAll(triggerSelector),
         modal = document.querySelector(modalSelector),
         close = document.querySelector(closeSelector),
-        windows = document.querySelectorAll('[data-modal]');
+        windows = document.querySelectorAll('[data-modal]'),
+        scroll = calcScroll();
     trigger.forEach(function (item) {
       item.addEventListener('click', function (e) {
         if (e.target) {
@@ -18125,29 +18126,20 @@ var modals = function modals() {
     modal.addEventListener('click', function (e) {
       if (e.target === modal && closeClickOverlay) {
         hiddenCloser(modal);
-      } // windows.forEach(item => {
-      //   hiddenCloser(item);
-      // });
-
+      }
     });
   }
 
   function hiddenCloser(bodyToHide) {
-    bodyToHide.style.display = 'none'; //document.body.classList.remove('modal-open');
-    // document.body.style.overflow = 'hidden';
-
-    bodyToHide.style.display === 'block' ? document.body.style.overflow = 'hidden' : document.body.style.overflow = ''; // windows.forEach(item => {
-    //   if(item.hasAttribute('data-modal')){
-    //     hiddenCloser(item);
-    //   }
-    //   showModal(item);
-    // });
+    bodyToHide.style.display = 'none';
+    bodyToHide.style.display === 'block' ? document.body.style.overflow = 'hidden' : document.body.style.overflow = '';
+    document.body.style = "0px";
   }
 
   function showModal(bodyToHide) {
-    bodyToHide.style.display = 'block'; //document.body.classList.add('modal-open');
-
+    bodyToHide.style.display = 'block';
     document.body.style.overflow = 'hidden';
+    document.body.style = "".concat(scroll, "px");
   }
 
   function showModalByTime(selector, time) {
@@ -18158,11 +18150,22 @@ var modals = function modals() {
   } // showModalByTime('.popup_engineer', 60000);
 
 
+  function calcScroll() {
+    var div = document.createElement('div');
+    div.setAttribute('id', 'technical');
+    div.style.cssText = "width: 50px; height: 50px; overflow-y = scroll; visibility: hidden";
+    document.body.appendChild(div);
+    var scrollWidth = div.offsetWidth - div.clientWidth;
+    div.remove();
+    return scrollWidth;
+  }
+
   bindModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close', false);
   bindModal('.phone_link', '.popup', '.popup .popup_close');
   bindModal('.popup_calc_btn', '.popup_calc', '.popup_calc_close');
   bindModal('.popup_calc_button', '.popup_calc_profile', '.popup_calc_profile_close', false);
   bindModal('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false);
+  calcScroll();
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);

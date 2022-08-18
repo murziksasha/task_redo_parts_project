@@ -1,13 +1,10 @@
 const modals = () => {
-
-
   function bindModal(triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
     const trigger = document.querySelectorAll(triggerSelector),
       modal = document.querySelector(modalSelector),
       close = document.querySelector(closeSelector),
-      windows = document.querySelectorAll('[data-modal]');
-
-
+      windows = document.querySelectorAll('[data-modal]'),
+      scroll = calcScroll();
 
     trigger.forEach(item => {
       item.addEventListener('click', e => {
@@ -41,32 +38,23 @@ const modals = () => {
       if (e.target === modal && closeClickOverlay) {
         hiddenCloser(modal);
       }
-      // windows.forEach(item => {
-      //   hiddenCloser(item);
-      // });
     });
   }
 
   function hiddenCloser(bodyToHide) {
     bodyToHide.style.display = 'none';
-    //document.body.classList.remove('modal-open');
-    // document.body.style.overflow = 'hidden';
 
     bodyToHide.style.display === 'block'
       ? (document.body.style.overflow = 'hidden')
       : (document.body.style.overflow = '');
-      // windows.forEach(item => {
-      //   if(item.hasAttribute('data-modal')){
-      //     hiddenCloser(item);
-      //   }
-      //   showModal(item);
-      // });
+      document.body.style = `0px`;
+  
   }
 
   function showModal(bodyToHide) {
     bodyToHide.style.display = 'block';
-    //document.body.classList.add('modal-open');
     document.body.style.overflow = 'hidden';
+    document.body.style = `${scroll}px`;
   }
 
   function showModalByTime(selector, time) {
@@ -78,6 +66,18 @@ const modals = () => {
 
   // showModalByTime('.popup_engineer', 60000);
 
+  function calcScroll() {
+    const div = document.createElement('div');
+    div.setAttribute('id', 'technical');
+    div.style.cssText = `width: 50px; height: 50px; overflow-y = scroll; visibility: hidden`;
+
+    document.body.appendChild(div);
+
+    let scrollWidth = div.offsetWidth - div.clientWidth;
+    div.remove();
+    return scrollWidth;
+  }
+
   bindModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close', false);
 
   bindModal('.phone_link', '.popup', '.popup .popup_close');
@@ -87,6 +87,8 @@ const modals = () => {
   bindModal('.popup_calc_button', '.popup_calc_profile', '.popup_calc_profile_close', false);
 
   bindModal('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false);
+
+  calcScroll();
 };
 
 export default modals;
