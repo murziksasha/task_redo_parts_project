@@ -56,6 +56,7 @@ const forms = state => {
           setTimeout(() => {
             statusMessage.remove();
             document.querySelector('.popup_calc_end').style.display = 'none';
+            document.body.style.overflow = '';
           }, 5000);
         });
     });
